@@ -1,12 +1,8 @@
 import express from 'express'
 import cors from 'cors'
 import passport from 'passport'
-
-import config from './config'
 import routes from './routes'
-
 import morgan from './middlewares/logger.middleware'
-import Logger from './utils/logger.utils'
 
 const app = express()
 
@@ -22,8 +18,4 @@ app.use(morgan)
 
 app.use('/api', routes)
 
-const server = app.listen(config.appPort, () => {
-  Logger.debug(`Server is up and running @ http://localhost:${config.appPort}`)
-})
-
-export default server
+export default app
