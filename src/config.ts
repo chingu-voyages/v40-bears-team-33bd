@@ -13,4 +13,5 @@ export default {
   databaseName: process.env.DATABASE_NAME || '',
   databaseUser: process.env.DATABASE_USERNAME || 'root',
   databasePassword: process.env.DATABASE_PASSWORD || '',
+  databaseUrl: process.env.DATABASE_URL || '',
 }

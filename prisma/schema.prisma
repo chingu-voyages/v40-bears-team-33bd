@@ -10,10 +10,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-model Post {
-  id       Int     @id @default(autoincrement())
-  title    String  @unique
-  content     String
-  author String
+model User {
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  email         String    @unique
+  username      String?   @unique
+  password      String    @default("")
+  wagers_done   Int       @default(0)
+  wagers_won    Int       @default(0)
+  amount_won    Int       @default(0)
+  amount_betted Int       @default(0)
+  wagers_made   Int       @default(0)
+  api_id        String?   @default("")
+  photo         String?   @default("")
 }
