@@ -10,10 +10,56 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id            Int      @id @default(autoincrement())
+  created_at    DateTime @default(now())
+  email         String
+  username      String?
+  password      String   @default("")
+  wagers_done   Int      @default(0)
+  wagers_won    Int      @default(0)
+  amount_won    Int      @default(0)
+  amount_betted Int      @default(0)
+  wagers_made   Int      @default(0)
+  api_id        String?  @default("")
+  photo         String?  @default("")
+  wagers        Wager[]
+  wagees        Wagee[]
+  invites       Invite[]
 
-model Post {
-  id       Int     @id @default(autoincrement())
-  title    String  @unique
-  content     String
-  author String
+  @@unique([email, username])
+}
+
+model Wager {
+  id              Int      @id @default(autoincrement())
+  name            String   @default("")
+  description     String?  @default("")
+  rules           String?  @default("")
+  amount          Int      @default(0)
+  expiration_date Int      @default(0)
+  winner_id       Int      @default(0)
+  owner_id        Int
+  participant_id  Int      @default(0)
+  owner           User     @relation(fields: [owner_id], references: [id])
+  Wagee           Wagee[]
+  Invite          Invite[]
+}
+
+model Wagee {
+  wagee_id        Int
+  primary_user_id Int
+  agrees_winner   String? @default("")
+  wager           Wager   @relation(fields: [wagee_id], references: [id])
+  user            User    @relation(fields: [primary_user_id], references: [id])
+
+  @@id([wagee_id, primary_user_id])
+}
+
+model Invite {
+  wager_id   Int
+  invitee_id Int
+  wager      Wager @relation(fields: [wager_id], references: [id])
+  invitee    User  @relation(fields: [invitee_id], references: [id])
+
+  @@id([wager_id, invitee_id])
 }
