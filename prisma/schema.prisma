@@ -17,3 +17,51 @@ model Post {
   content     String
   author String
 }
+
+model User {
+  userId          Int       @id @default(autoincrement())
+  createdAt       DateTime  @default(now())
+  email           String    @unique
+  username        String?   @unique
+  password        String    @default("")
+  wagers_done     Int       @default(0)
+  wagers_won      Int       @default(0)
+  amount_won      Int       @default(0)
+  amount_betted   Int       @default(0)
+  wagers_made     Int       @default(0)
+  api_id          String?   @default("")
+  photo           String?   @default("")
+  wagers          Wager[]
+  wagees          Wagee[]
+  invites         Invite[]
+}
+
+model Wager {
+  wagerId         Int       @id @default(autoincrement())
+  name            String    @default("")
+  description     String?   @default("")
+  rules           String?   @default("")
+  amount          Int       @default(0)
+  expiration_date Int       @default(0)
+  winnerId        Int       @default(0)
+  ownerId         Int
+  participantId   Int       @default(0)
+  owner           User      @relation("ownerId", fields: [ownerId], references: [userId])
+}
+
+model Wagee {
+  id              Int       @id @default(autoincrement())
+  wageeId         Int
+  primaryUserId   Int
+  agrees_winner   String?   @default("")
+  wager           Wager     @relation("wageeId", fields: [wageeId], references: [wagerId])  
+  user            User      @relation("primaryUserId", fields: [primaryUserId], references: [userId])
+}
+
+model Invite {
+  id              Int       @id @default(autoincrement())
+  wagerId         Int
+  inviteeId       Int
+  wager           Wager     @relation("wagerId", fields: [wagerId], references: [wagerId])
+  invitee         User      @relation("inviteeId", fields: [inviteeId], references: [userId])
+}
