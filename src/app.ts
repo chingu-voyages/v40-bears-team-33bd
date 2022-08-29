@@ -4,6 +4,7 @@ import passport from 'passport'
 import routes from './routes'
 import morgan from './middlewares/logger.middleware'
 import ExpressError from './utils/ExpressError'
+import users from './routes/user'
 
 const app = express()
 
@@ -18,6 +19,7 @@ app.use(passport.initialize())
 app.use(morgan)
 
 app.use('/api', routes)
+app.use('/api', users);
 
 // handle not found routes
 app.use((req, res, next) => {
